@@ -1,0 +1,92 @@
+[
+  {
+    "employeeId": "00001",
+    "firstname": "Alejandro",
+    "lastname": "Schovsky",
+    "companyPosition": {
+      "PositionId": 1,
+      "PositionDescription": "Manager"
+    }
+  },
+  {
+    "employeeId": "00002",
+    "firstname": "Mary",
+    "lastname": "Lauren",
+    "companyPosition": {
+      "PositionId": 2,
+      "PositionDescription": "Recruiter"
+    }
+  },
+  {
+    "employeeId": "00003",
+    "firstname": "Alejandro",
+    "lastname": "Donan",
+    "companyPosition": {
+      "PositionId": 3,
+      "PositionDescription": "CEO"
+    }
+  },
+  {
+    "employeeId": "00004",
+    "firstname": "Ashley",
+    "lastname": "Buiniskas",
+    "companyPosition": {
+      "PositionId": 4,
+      "PositionDescription": "CTO"
+    }
+  },
+  {
+    "employeeId": "00005",
+    "firstname": "Alejandro",
+    "lastname": "Donan",
+    "companyPosition": {
+      "PositionId": 5,
+      "PositionDescription": "Salesman"
+    }
+  },
+  {
+    "employeeId": "00006",
+    "firstname": "Henry",
+    "lastname": "Solis",
+    "companyPosition": {
+      "PositionId": 6,
+      "PositionDescription": "Developer"
+    }
+  },
+  {
+    "employeeId": "00007",
+    "firstname": "Jayson",
+    "lastname": "Wright",
+    "companyPosition": {
+      "PositionId": 7,
+      "PositionDescription": "Architect"
+    }
+  },
+  {
+    "employeeId": "00008",
+    "firstname": "Charlie",
+    "lastname": "Grant",
+    "companyPosition": {
+      "PositionId": 8,
+      "PositionDescription": "Scrum master"
+    }
+  },
+  {
+    "employeeId": "00009",
+    "firstname": "Willis",
+    "lastname": "Gerhold",
+    "companyPosition": {
+      "PositionId": 6,
+      "PositionDescription": "Developer"
+    }
+  },
+  {
+    "employeeId": "00010",
+    "firstname": "Moises",
+    "lastname": "Barton",
+    "companyPosition": {
+      "PositionId": 8,
+      "PositionDescription": "Scrum master"
+    }
+  }
+]
