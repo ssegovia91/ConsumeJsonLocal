@@ -27,6 +27,26 @@ namespace ConsumeJsonLocal.Utils
                     //}
                 });
 
+                //lines to add security token bearer to endpoint
+                //c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                //{
+                //    In = ParameterLocation.Header,
+                //    Name = "Authorization",
+                //    Type = SecuritySchemeType.ApiKey,
+                //    Description = "JWT Authorization header using the Bearer scheme.Example: \"Authorization: Bearer {token}\""
+                //});
+
+                //c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                //{
+                //    {
+                //        new OpenApiSecurityScheme
+                //        {
+                //            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                //        },
+                //        new []{ "read", "write" }
+                //    }
+                //});
+
                 //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
