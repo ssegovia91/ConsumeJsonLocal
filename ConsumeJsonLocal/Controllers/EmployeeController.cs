@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using ConsumeJsonLocal.Models;
 using ConsumeJsonLocal.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ConsumeJsonLocal.Controllers
 {
@@ -50,6 +52,76 @@ namespace ConsumeJsonLocal.Controllers
             }
 
             return NotFound(new ResponseModel<EmployeeDTO> { Message = "Employee not found" });
+        }
+
+        //GET: api/Employee/5
+        [HttpPost]
+        public async Task<ActionResult<ResponseModel<EmployeeDTO>>> Post(EmployeeDTO employeeRecord)
+        {
+            var getEmployeeList = await _dataHandler.LoadJsonFile<EmployeeDTO>("Employees.json");
+            getEmployeeList.Add(employeeRecord);
+
+            var result = await _dataHandler.AddJsonRecordInFile("Employees.json", getEmployeeList, employeeRecord.EmployeeId);
+
+            if (result != string.Empty)
+            {
+                var response = new ResponseModel<string> { Result = result };
+                return Ok(response);
+            }
+
+            return StatusCode(StatusCodes.Status304NotModified, new ResponseModel<string> { Message = "Employee not added" });
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<ResponseModel<EmployeeDTO>>> Put(EmployeeDTO employeeRecord)
+        {
+            //get actual list
+            var getEmployeeList = await _dataHandler.LoadJsonFile<EmployeeDTO>("Employees.json");
+            //remove element of actual list
+            var getEmployeeToUpdate = getEmployeeList.RemoveAll((x) => x.EmployeeId == employeeRecord.EmployeeId);
+            
+            if(getEmployeeToUpdate > 0)
+            {
+                //add new element to the list
+                getEmployeeList.Add(employeeRecord);
+
+                var result = await _dataHandler.UpdateJsonRecordInFile("Employees.json", getEmployeeList, employeeRecord);
+
+                if (result != null)
+                {
+                    var response = new ResponseModel<EmployeeDTO> { Result = result };
+                    return Ok(response);
+                }
+
+                return StatusCode(StatusCodes.Status304NotModified, new ResponseModel<string> { Message = "Employee not updated" });
+            }
+
+            return StatusCode(StatusCodes.Status404NotFound, new ResponseModel<string> { Message = "Employee not found" });
+
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult<ResponseModel<EmployeeDTO>>> Delete(string id)
+        {
+            //get actual list
+            var getEmployeeList = await _dataHandler.LoadJsonFile<EmployeeDTO>("Employees.json");
+            //remove element of the list
+            var getEmployeeToDelete = getEmployeeList.Where(x => x.EmployeeId == id).FirstOrDefault();
+
+            if (getEmployeeToDelete != null)
+            {
+                getEmployeeList.Remove(getEmployeeToDelete);
+            }
+
+            var result = await _dataHandler.DeleteJsonRecordInFile("Employees.json", getEmployeeList);
+
+            if (result)
+            {
+                var response = new ResponseModel<bool> { Result = result };
+                return Ok(response);
+            }
+
+            return StatusCode(StatusCodes.Status304NotModified, new ResponseModel<string> { Message = "Employee not deleted" });
         }
     }
 }
