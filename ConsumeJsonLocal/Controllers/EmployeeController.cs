@@ -21,7 +21,19 @@ namespace ConsumeJsonLocal.Controllers
         }
 
         // GET: api/Employee
+        /// <summary>
+        /// Get a List of Employees
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     Get api/Employee
+        /// </remarks>
+        /// <returns>Employee List</returns>
+        /// <response code="200">Returns Employee List</response>
+        /// <response code="404">Employee List not found </response>
         [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<ResponseModel<List<EmployeeDTO>>>> GetAllEmployees()
         {
             var employee = await _dataHandler.LoadJsonFile<EmployeeDTO>("Employees.json");
@@ -36,10 +48,21 @@ namespace ConsumeJsonLocal.Controllers
 
         }
 
-        //GET: api/Employee/5
-        [HttpGet]
-        [Route("{employeeId}")]
-        public async Task<ActionResult<ResponseModel<EmployeeDTO>>> GetEmployeeById(string employeeId)
+        // GET: api/Employee/00001
+        /// <summary>
+        /// Get an Employee by Id
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     Get api/Employee/
+        /// </remarks>
+        /// <returns>Employee by Id</returns>
+        /// <response code="200">Returns Employee by Id</response>
+        /// <response code="404">Employee by Id not found </response>
+        [HttpGet("{employeeId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(404)]
+        public async Task<ActionResult<ResponseModel<EmployeeDTO>>> GetEmployeeById([FromRoute] string employeeId)
         {
 
             var employeeList = await _dataHandler.LoadJsonFile<EmployeeDTO>("Employees.json");
@@ -54,9 +77,21 @@ namespace ConsumeJsonLocal.Controllers
             return NotFound(new ResponseModel<EmployeeDTO> { Message = "Employee not found" });
         }
 
-        //GET: api/Employee/5
+        // POST: api/Employee
+        /// <summary>
+        /// Create an Employee
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     Insert api/Employee
+        /// </remarks>
+        /// <returns>Created Employee</returns>
+        /// <response code="200">Returns when Employee was correctly created</response>
+        /// <response code="304">Returned when Employee was not created </response>
         [HttpPost]
-        public async Task<ActionResult<ResponseModel<EmployeeDTO>>> Post(EmployeeDTO employeeRecord)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(304)]
+        public async Task<ActionResult<ResponseModel<EmployeeDTO>>> Post([FromBody] EmployeeDTO employeeRecord)
         {
             var getEmployeeList = await _dataHandler.LoadJsonFile<EmployeeDTO>("Employees.json");
             getEmployeeList.Add(employeeRecord);
@@ -69,16 +104,31 @@ namespace ConsumeJsonLocal.Controllers
                 return Ok(response);
             }
 
-            return StatusCode(StatusCodes.Status304NotModified, new ResponseModel<string> { Message = "Employee not added" });
+            return StatusCode(StatusCodes.Status304NotModified, new ResponseModel<string> { Message = "Employee not created" });
         }
 
-        [HttpPut]
-        public async Task<ActionResult<ResponseModel<EmployeeDTO>>> Put(EmployeeDTO employeeRecord)
+        // PUT: api/Employee/{employeeId}
+        /// <summary>
+        /// Updates an Employee
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     Update api/Employee/00001
+        /// </remarks>
+        /// <returns>Updated Employee</returns>
+        /// <response code="200">Returns when Employee was correctly updated</response>
+        /// <response code="304">Returned when Employee was not updated </response>
+        /// <response code="404">Returned when Employee was not found </response>
+        [HttpPut("{employeeId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(304)]
+        [ProducesResponseType(404)]        
+        public async Task<ActionResult<ResponseModel<EmployeeDTO>>> Put([FromBody] EmployeeDTO employeeRecord, [FromRoute] string employeeId)
         {
             //get actual list
             var getEmployeeList = await _dataHandler.LoadJsonFile<EmployeeDTO>("Employees.json");
             //remove element of actual list
-            var getEmployeeToUpdate = getEmployeeList.RemoveAll((x) => x.EmployeeId == employeeRecord.EmployeeId);
+            var getEmployeeToUpdate = getEmployeeList.RemoveAll((x) => x.EmployeeId == employeeId);
             
             if(getEmployeeToUpdate > 0)
             {
@@ -100,13 +150,26 @@ namespace ConsumeJsonLocal.Controllers
 
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<ResponseModel<EmployeeDTO>>> Delete(string id)
+        // DELETE: api/Employee/{employeeId}
+        /// <summary>
+        /// Deletes an Employee
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///     DELETE api/Employee/00001
+        /// </remarks>
+        /// <returns>Confirmation of deletion</returns>
+        /// <response code="200">Returns when Employee was correctly deleted</response>
+        /// <response code="304">Returned when Employee was not modified </response>
+        [HttpDelete("{employeeId}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(304)]
+        public async Task<ActionResult<ResponseModel<EmployeeDTO>>> Delete([FromRoute] string employeeId)
         {
             //get actual list
             var getEmployeeList = await _dataHandler.LoadJsonFile<EmployeeDTO>("Employees.json");
             //remove element of the list
-            var getEmployeeToDelete = getEmployeeList.Where(x => x.EmployeeId == id).FirstOrDefault();
+            var getEmployeeToDelete = getEmployeeList.Where(x => x.EmployeeId == employeeId).FirstOrDefault();
 
             if (getEmployeeToDelete != null)
             {
